@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narozeninové přání</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f3f3;
+        }
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+        }
+        h1 {
+            color: #d23669;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .message {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .signature {
+            font-style: italic;
+            text-align: right;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #d23669;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #b52c59;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(210, 54, 105, 0.3);
+        }
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #d23669;
+            transform: rotate(45deg);
+            opacity: 0;
+            animation: float 4s ease-in-out infinite;
+        }
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #d23669;
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: -10px;
+        }
+        @keyframes float {
+            0% {
+                transform: rotate(45deg) translateY(0) scale(0.3);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .message {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="card">
+        <h1>Všechno nejlepší k 29. narozeninám!</h1>
+        
+        <div class="message">
+            <p>Milá sestřičko,</p>
+            
+            <p>k Tvým 29. narozeninám Ti ze srdce přeji všechno nejlepší! Tento rok je pro Tebe obzvlášť výjimečný, protože se chystáš na jednu z nejkrásnějších životních rolí – stát se maminkou.</p>
+            
+            <p>Přeji Ti, ať Tvé těhotenství probíhá v klidu a pohodě, ať Tě provází jen samé krásné chvíle plné radostného očekávání. Ať máš dostatek energie a síly na všechny změny, které přicházejí, a ať se Ti daří zvládat všechny výzvy s úsměvem na tváři.</p>
+            
+            <p>Až se koncem června narodí Tvůj malý zázrak, přeji Ti, ať je zdravý a silný, ať Ti přináší jen radost a štěstí. A Tobě přeji, ať jsi tou nejšťastnější maminkou na světě!</p>
+            
+            <p>Užij si dnešní den, zasloužíš si oslavit nejen své narozeniny, ale i toto krásné období ve svém životě. Jsem tu pro Tebe a těším se, až budu tím nejlepším strýčkem pro Tvé miminko!</p>
+        </div>
+        
+        <div class="signature">
+            S láskou,<br>
+            Tvůj brácha Fanda
+        </div>
+        
+        <div class="buttons">
+            <button id="readBtn">Přečíst nahlas</button>
+            <button id="celebrateBtn">Oslavit!</button>
+        </div>
+    </div>
+
+    <script>
+        // Funkce pro předčítání textu
+        const readBtn = document.getElementById('readBtn');
+        readBtn.addEventListener('click', function() {
+            const message = document.querySelector('.message').textContent;
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'cs-CZ';
+            speechSynthesis.speak(utterance);
+        });
+
+        // Funkce pro oslavu - vytvoření srdíček
+        const celebrateBtn = document.getElementById('celebrateBtn');
+        const heartsContainer = document.getElementById('hearts');
+        
+        celebrateBtn.addEventListener('click', function() {
+            createHearts(30);
+        });
+
+        function createHearts(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    heart.style.opacity = Math.random() * 0.5 + 0.3;
+                    heartsContainer.appendChild(heart);
+                    
+                    // Odstranění srdíčka po animaci
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        // Automaticky přehrát animaci srdíček při načtení stránky
+        window.addEventListener('load', function() {
+            createHearts(15);
+        });
+    </script>
+</body>
+</html>
